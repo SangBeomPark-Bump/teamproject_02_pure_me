@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'dart:typed_data';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
@@ -10,9 +11,8 @@ import 'package:http/http.dart' as http;
 import 'package:team_project2_pure_me/vm/feed_handler.dart';
 
 class UserHandler extends FeedHandler {
-  // RxList<User> userList = <User>[].obs;
+  RxList<User> userList = <User>[].obs;
 
-  // 현재 유저의 정보를 저장할 변수
   final curUser = User(
           eMail: '1234@gmail.com',
           nickName: '',
@@ -23,13 +23,15 @@ class UserHandler extends FeedHandler {
           profileImage: 'sample.png')
       .obs; // fetch해오기 위한 User class
 
-  /// 중복된 이메일을 확인해줄 변수
+  int curLev = 0; // point를 통해 계산한 레벨을 저장할 변수
+
   bool eMailUnique = false; // 회원가입시 이메일 확인을 위한 변수
 
-  ///
   String? profileImageName;
 
-  // RxBool profileImageChanged = false.obs;
+  ///
+
+  RxBool profileImageChanged = false.obs;
 
   bool userProfileImageChanged = false;
 
@@ -40,17 +42,16 @@ class UserHandler extends FeedHandler {
   // 걸음수
   var step = 0.obs;
 
-  /// 건강앱 사용을 위한 권한 요청
+  /// 권한
   Future<void> requestHealthPermission() async {
     // 권한 상태 확인
     var status = await Permission.sensors.status;
+    // print(status);
 
-    // 허용이 아닐 경우 실행
     if (status.isDenied) {
       // 권한 요청
       if (await Permission.sensors.request().isGranted) {
         // print("Health permission granted");
-        // 권한을 허용 할 경우 실행
         healthStep();
       } else {
         // print("Health permission denied");
@@ -60,42 +61,51 @@ class UserHandler extends FeedHandler {
     }
   }
 
-  /// 건강앱에서 유저의 걸음 수를 가져옵니다.
+  ///
   // Health()
   healthStep() async {
     Health().configure();
     var types = [HealthDataType.STEPS];
-    // 건강앱에서 걸음수 정보 권한 요청
     bool requested = await Health().requestAuthorization(types);
     var now = DateTime.now();
 
-    // 현재 일의 년, 월, 일
+    // // fetch health data from the last 24 hours
+    // List<HealthDataPoint> healthData = await Health().getHealthDataFromTypes(
+    //   types: types,
+    //   startTime: now.subtract(const Duration(days: 7)),
+    //   endTime: now,
+    // );
+
+    // print(healthData);
+    // var permissions = [
+    //   HealthDataAccess.READ_WRITE,
+    // ];
+    // // print(healthData[0].value);
+    // await Health().requestAuthorization(types, permissions: permissions);
+
+    // bool success = await Health().writeHealthData(
+    //   value: 10,
+    //   type: HealthDataType.STEPS,
+    //   startTime: now.subtract(const Duration(days: 7)),
+    //   endTime: now,
+    // );
+
     var midnight = DateTime(now.year, now.month, now.day);
     // start, end // date
     int? steps = await Health().getTotalStepsInInterval(midnight, now);
     step.value = steps ?? 0;
+    // print(steps);
   }
 
-  /// 로그인
-  /// 로그인시 curUser 정보를 가져옴
   Future<bool> loginVerify(String eMail, String password) async {
     var url =
         Uri.parse("$baseUrl/user/loginVerify?eMail=$eMail&password=$password");
     var response = await http.get(url);
     var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
     var result = dataConvertedJSON['result'];
-    bool ver = result[0]['seq'];
-
-    if (ver) {
-      // curUser의 정보를 가져오는 함수
-      await curUserUpdate(eMail);
-      return true;
-    } else {
-      return false;
-    }
+    return result[0]['seq'] as bool;
   }
 
-  /// curUser의 정보를 가져오는 함수
   curUserUpdate(String eMail) async {
     var url = Uri.parse("$baseUrl/user/login?eMail=$eMail");
     var response = await http.get(url);
@@ -103,9 +113,9 @@ class UserHandler extends FeedHandler {
     var result = dataConvertedJSON['result'];
     curUser.value = User.fromMap(result[0]);
     update();
+    // print(curUser.nickName);
   }
 
-  /// 중복된 이메일 체크
   eMailVerify(String eMail) async {
     var url = Uri.parse("$baseUrl/user/eMailVerify?eMail=$eMail");
     var response = await http.get(url);
@@ -116,8 +126,6 @@ class UserHandler extends FeedHandler {
     update();
   }
 
-  /// 회원가입
-  /// 비밀번호 중복확인
   signIn(String eMail, String password, String passwordVerify, String nickName,
       String phone) async {
     if (password != passwordVerify) {
@@ -129,6 +137,15 @@ class UserHandler extends FeedHandler {
 
       return true;
     }
+  }
+
+  fetchUserLev() {
+    /// firebase의 레벨table을 참조해서 유저의 레벨을 fetch해오는 함수
+    /// LevList에 lev들을 저장한다.
+  }
+
+  changeCurLev() {
+    // curLev를 바꿔준다 LevList에 맞게 바꿔준 뒤 update()하는 로직을 짠다.
   }
 
   userUpdate(String eMail, String nickName, String phone) async {
@@ -162,7 +179,7 @@ class UserHandler extends FeedHandler {
     curUser.value.nickName = nickName;
     curUser.value.eMail = eMail;
     curUser.value.phone = phone;
-    // profileImageChanged.value = !profileImageChanged.value;
+    profileImageChanged.value = !profileImageChanged.value;
     // print(profileImageChanged.value);
     update();
   }
@@ -191,9 +208,14 @@ class UserHandler extends FeedHandler {
     request.fields['prefix'] = curUser.value.eMail;
 
     await request.send();
+    // var response = await request.send();
+    // if (response.statusCode == 200) {
+    //   // print('success');
+    // } else {
+    //   // print("error");
+    // }
   }
 
-  // 기본 이미지로 되돌리는 함수
   userImageNull() {
     imageFile = null;
     userProfileImageChanged = true;
