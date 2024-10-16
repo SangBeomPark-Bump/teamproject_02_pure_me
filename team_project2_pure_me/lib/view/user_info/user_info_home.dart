@@ -137,7 +137,8 @@ class UserInfoHome extends StatelessWidget {
                                                                     .bold),
                                                       ),
                                                       Text(
-                                                        '이메일 :  ${vmhandler.curUser.value.eMail}',
+                                                        vmhandler.curUser.value
+                                                            .eMail,
                                                         style: const TextStyle(
                                                             fontSize: 16),
                                                       ),
