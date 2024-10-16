@@ -243,12 +243,12 @@ class CalcFood extends StatelessWidget {
       }
 
       if (dairy != null) {
-        vmHandler.giveData(vmHandler, vmHandler.foodlist[1],
+        vmHandler.giveData(vmHandler, vmHandler.foodlist[2],
             milkController.text.trim(), box.read('pureme_id'));
       }
 
       if (plant != null) {
-        vmHandler.giveData(vmHandler, vmHandler.foodlist[1],
+        vmHandler.giveData(vmHandler, vmHandler.foodlist[3],
             plantController.text.trim(), box.read('pureme_id'));
       }
 
