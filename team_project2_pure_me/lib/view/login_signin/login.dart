@@ -135,6 +135,11 @@ class Login extends StatelessWidget {
                                   ),
                                 ),
                                 onPressed: () async {
+                                  vmHandler.totalCarbonFootprint.value = '0';
+                                  vmHandler.treesFootprint.value = '0';
+                                  vmHandler.totalEnergyReduction.value = '0';
+                                  vmHandler.totalReducedCarbonFootprint.value =
+                                      '0';
                                   if (nullcheck()) {
                                     _showalibaba();
                                     return;
@@ -157,7 +162,8 @@ class Login extends StatelessWidget {
                                         showCease(cease.$2!, cease.$1!);
                                         return;
                                       }
-                                      await vmHandler.curUserUpdate(idController.text.trim());
+                                      await vmHandler.curUserUpdate(
+                                          idController.text.trim());
                                       box.write('pureme_id', idController.text);
                                     } else {
                                       box.write('manager', idController.text);

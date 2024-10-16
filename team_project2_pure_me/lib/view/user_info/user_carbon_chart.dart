@@ -10,6 +10,8 @@ class UserCarbonChart extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    chartHandler.carbonData.value = {};
+    chartHandler.averageCarbonData.value = {};
     chartHandler.fetchUserCarbonData();
 
     return Scaffold(
@@ -23,12 +25,20 @@ class UserCarbonChart extends StatelessWidget {
               ),
             ),
           ),
-          SafeArea(
-            child: Obx(() {
-              if (chartHandler.carbonData.isEmpty) {
-                return const Center(child: CircularProgressIndicator());
-              }
-              return SingleChildScrollView(
+          Obx(() {
+            if (chartHandler.carbonData.isEmpty) {
+              return Scaffold(
+                backgroundColor: Colors.transparent,
+                appBar: AppBar(
+                  backgroundColor: Colors.transparent,
+                ),
+                body: const Center(
+                  child: Text('데이터가 존재하지 않습니다.'),
+                ),
+              );
+            }
+            return SafeArea(
+              child: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.all(16.0),
                   child: Column(
@@ -41,9 +51,9 @@ class UserCarbonChart extends StatelessWidget {
                     ],
                   ),
                 ),
-              );
-            }),
-          ),
+              ),
+            );
+          }),
         ],
       ),
     );
