@@ -131,7 +131,7 @@ class UserInfoUpdate extends StatelessWidget {
                                                           ImageSource.gallery);
                                                     },
                                                     child: const Text(
-                                                      '사진 수정',
+                                                      '사진수정',
                                                       style: TextStyle(
                                                         decoration:
                                                             TextDecoration
@@ -167,12 +167,10 @@ class UserInfoUpdate extends StatelessWidget {
                                           CrossAxisAlignment.start,
                                       children: [
                                         const SizedBox(height: 5),
-                                        Row(
+                                        const Row(
                                           children: [
-                                            const SizedBox(width: 8),
-                                            Image.asset('images/sprout.png',
-                                                width: 24, height: 24),
-                                            const SizedBox(height: 10),
+                                            SizedBox(width: 8),
+                                            SizedBox(height: 10),
                                           ],
                                         ),
                                         Text(
@@ -184,7 +182,7 @@ class UserInfoUpdate extends StatelessWidget {
                                             style: const TextStyle(
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.normal),
-                                            vmhandler.curUser.value.eMail),
+                                            vmhandler.curUser.value.phone),
                                       ],
                                     ),
                                   ),
@@ -265,22 +263,6 @@ class UserInfoUpdate extends StatelessWidget {
       );
     });
   }
-
-  // Future<Uint8List?> _fetchImage() async {
-  //   try {
-  //     final response = await http.get(
-  //       Uri.parse(
-  //           "http://127.0.0.1:8000/user/view/${vmhandler.curUser.value.profileImage!}"),
-  //     );
-
-  //     if (response.statusCode == 200) {
-  //       return response.bodyBytes; // 바이트 배열로 반환
-  //     }
-  //   } catch (e) {
-  //     print("Error fetching image: $e");
-  //   }
-  //   return null; // 에러 발생 시 null 반환
-  // }
 
   _showDialog() {
     Get.defaultDialog(
