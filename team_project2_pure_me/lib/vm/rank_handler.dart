@@ -5,7 +5,6 @@ import 'package:get/get.dart';
 import 'package:team_project2_pure_me/model/user.dart';
 import 'package:http/http.dart' as http;
 import 'package:team_project2_pure_me/vm/chart_handler.dart';
-import 'package:team_project2_pure_me/vm/convert/convert_email_to_name.dart';
 
 /* **RankHandler 클래스**
 
@@ -32,7 +31,6 @@ import 'package:team_project2_pure_me/vm/convert/convert_email_to_name.dart';
 
 class RankHandler extends ChartHandler {
   /// 이메일을 닉네임으로 변환하는 도우미 클래스 인스턴스
-  ConvertEmailToName convertEmailToName = ConvertEmailToName();
 
   /// 전체 랭킹 리스트를 저장하는 반응형 리스트
   RxList<User> rankList = <User>[].obs;
@@ -124,7 +122,7 @@ class RankHandler extends ChartHandler {
       fetchMyRank();
     } else {
       // 에러 발생 시 에러 메시지 출력
-      print('랭킹을 불러오는 데 실패했습니다: ${response.statusCode}');
+      // print('랭킹을 불러오는 데 실패했습니다: ${response.statusCode}');
     }
   }
   /* **fetchTotalCarbon 메소드**
@@ -175,11 +173,11 @@ class RankHandler extends ChartHandler {
         }
       } else {
         // 'result'가 'OK'가 아닌 경우 에러 메시지 출력
-        print("오류 발생: ${dataConvertedJSON['message']}");
+        // print("오류 발생: ${dataConvertedJSON['message']}");
       }
     } else {
       // HTTP 요청이 실패한 경우 에러 메시지 출력
-      print("랭킹을 불러오는 데 실패했습니다: ${response.statusCode}");
+      // print("랭킹을 불러오는 데 실패했습니다: ${response.statusCode}");
     }
   }
 
@@ -198,10 +196,10 @@ class RankHandler extends ChartHandler {
     // 사용자가 랭킹 리스트에 있는 경우, 랭킹을 설정합니다.
     if (rankIndex != -1) {
       myrank.value = rankIndex + 1; // 인덱스는 0부터 시작하므로 1을 더합니다.
-      print('User found at rank index: ${myrank.value}');
+      // print('User found at rank index: ${myrank.value}');
     } else {
       myrank.value = 0; // 랭킹 리스트에 없으면 0으로 설정
-      print('User not found in ranking list');
+      // print('User not found in ranking list');
     }
   }
 }

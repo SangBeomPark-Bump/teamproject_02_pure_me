@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:io';
 import 'dart:typed_data';
 import 'package:get/get.dart';
 import 'package:get/get_rx/get_rx.dart';
@@ -66,29 +65,8 @@ class UserHandler extends FeedHandler {
   healthStep() async {
     Health().configure();
     var types = [HealthDataType.STEPS];
-    bool requested = await Health().requestAuthorization(types);
+    await Health().requestAuthorization(types);
     var now = DateTime.now();
-
-    // // fetch health data from the last 24 hours
-    // List<HealthDataPoint> healthData = await Health().getHealthDataFromTypes(
-    //   types: types,
-    //   startTime: now.subtract(const Duration(days: 7)),
-    //   endTime: now,
-    // );
-
-    // print(healthData);
-    // var permissions = [
-    //   HealthDataAccess.READ_WRITE,
-    // ];
-    // // print(healthData[0].value);
-    // await Health().requestAuthorization(types, permissions: permissions);
-
-    // bool success = await Health().writeHealthData(
-    //   value: 10,
-    //   type: HealthDataType.STEPS,
-    //   startTime: now.subtract(const Duration(days: 7)),
-    //   endTime: now,
-    // );
 
     var midnight = DateTime(now.year, now.month, now.day);
     // start, end // date

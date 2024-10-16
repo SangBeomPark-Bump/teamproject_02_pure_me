@@ -11,7 +11,7 @@ class ManageFeed extends StatelessWidget {
   Widget build(BuildContext context) {
     final vmhandler = Get.put(ManageHandler());
 
-    final TextEditingController _searchController = TextEditingController();
+    final TextEditingController searchController = TextEditingController();
 
     return Stack(
       children: [
@@ -46,14 +46,14 @@ class ManageFeed extends StatelessWidget {
                             child: IconButton(
                                 onPressed: () {
                                   vmhandler.searchWriterChanged(
-                                      _searchController.text.trim());
+                                      searchController.text.trim());
                                 },
                                 icon: const Icon(Icons.search)),
                           ),
                           SizedBox(
                             width: Get.width * 0.8 - 8,
                             child: TextField(
-                              controller: _searchController,
+                              controller: searchController,
                               decoration:
                                   const InputDecoration(labelText: "유저로 검색"),
                             ),

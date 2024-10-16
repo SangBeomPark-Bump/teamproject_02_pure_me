@@ -301,9 +301,7 @@ class ManageHandler extends GetxController {
     await _manageFeed.doc(docId).update({'state': changeKind});
     var url = Uri.parse(
         "$manageUrl/reportFeed?manager_manageEMail=$managerManageEMail&feedId=$docId&changeKind=$changeKind");
-    var response = await http.get(url);
-    var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
-    var result = dataConvertedJSON['result'];
+    await http.get(url);
   }
 
   // ////////////////////////////////////////// searchUser에서 쓸 변수들
@@ -370,9 +368,7 @@ class ManageHandler extends GetxController {
     String userEmail = searchUserList.value[searchUserIndex!].eMail;
     var url = Uri.parse(
         "$manageUrl/accountCeaseInsert?user_eMail=$userEmail&manager_manageEMail=$managerEMail&ceaseReason=$ceaseReason&ceasePeroid=$searchUserRadio");
-    var response = await http.get(url);
-    var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
-    var result = dataConvertedJSON['result'];
+    await http.get(url);
   }
 
 /////// USER쪽 이미지를 불러오는 함수.. 자꾸 이미지가 없어서 그걸 바꿔줌
@@ -450,9 +446,7 @@ class ManageHandler extends GetxController {
     await _manageFeed.doc(docId).update({'state': '숨김'});
     var url = Uri.parse(
         "$manageUrl/reportFeed?manager_manageEMail=$managerManageEMail&feedId=$docId&changeKind=$changeKind");
-    var response = await http.get(url);
-    var dataConvertedJSON = json.decode(utf8.decode(response.bodyBytes));
-    var result = dataConvertedJSON['result'];
+    await http.get(url);
   }
 
   fetchSelectedFeed() async {
