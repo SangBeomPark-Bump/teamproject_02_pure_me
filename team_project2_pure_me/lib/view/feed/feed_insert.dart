@@ -12,6 +12,8 @@ class FeedInsert extends StatelessWidget {
   final feedHandler = Get.put(FeedHandler());
   @override
   Widget build(BuildContext context) {
+    feedHandler.imgFile = null;
+    feedHandler.imageFile = null;
     return GetBuilder<FeedHandler>(
       builder: (controller) {
         return GestureDetector(

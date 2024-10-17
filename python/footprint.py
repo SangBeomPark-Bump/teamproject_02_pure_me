@@ -508,7 +508,7 @@ async def get_rankings(limit: int = 10):
     user_reductions.sort(key=lambda x: x['total_reduction'], reverse=True)
 
     # 상위 `limit`명의 유저를 선택합니다.
-    top_users = user_reductions[:limit]
+    top_users = user_reductions[:]
     print(top_users)
 
     # 결과를 JSON 형식으로 반환.
