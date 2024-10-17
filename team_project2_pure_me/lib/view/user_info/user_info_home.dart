@@ -159,7 +159,7 @@ class UserInfoHome extends StatelessWidget {
                                   ),
                                   Positioned(
                                     right: 16,
-                                    bottom: 10,
+                                    bottom: 0,
                                     child: ElevatedButton.icon(
                                       onPressed: () {
                                         // 글쓰기 기능 구현

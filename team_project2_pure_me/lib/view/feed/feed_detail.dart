@@ -105,48 +105,73 @@ class FeedDetail extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            width: double.infinity,
-                            height: MediaQuery.of(context).size.height * 0.21,
-                            color: Colors.grey[300],
-                            child: Image.network(
-                                feedHandler.curFeed[0].feedImagePath),
-                          ),
-                          Text(
-                            '${feedHandler.curFeed[0].writeTime.year}-${feedHandler.curFeed[0].writeTime.month.toString().padLeft(2, '0')}-${feedHandler.curFeed[0].writeTime.day.toString().padLeft(2, '0')} ${feedHandler.curFeed[0].writeTime.hour.toString().padLeft(2, '0')}:${feedHandler.curFeed[0].writeTime.minute.toString().padLeft(2, '0')}',
-                            style: const TextStyle(
-                              color: Color(0xFF808080),
-                              fontSize: 16,
-                            ),
-                          ),
-                          Text(
-                            '게시물 작성 내용 : ${feedHandler.curFeed[0].content}',
-                            softWrap: true, // 자동 줄바꿈 활성화 (기본값이 true)
-                            overflow: TextOverflow.visible, // 텍스트가 잘리지 않도록 설정
-                          ),
-                          Row(
-                            // 하트랑 댓글 들어갈 자리
-                            children: [
-                              LikeButton(
-                                likeCount:
-                                    feedHandler.likeCount.value, // 값을 받아와야함
-                                isLiked: feedHandler.isLike.value, // 값을 받아와야함
-                                onTap: (value) =>
-                                    feedHandler.onLikeButtonTapped(value),
-                              ),
-                              IconButton(
-                                onPressed: () =>
-                                    replyBottomSheet(context, feedHandler),
-                                icon: const Icon(Icons.mode_comment_rounded),
-                              ),
-                            ],
-                          ),
-                          Padding(
-                            padding: const EdgeInsets.symmetric(vertical: 14),
-                            child: feedHandler.showReplyList.isEmpty
-                                ? const Text("첫 댓글을 작성해보세요!")
-                                : Text(
-                                    '${feedHandler.showReplyList[feedHandler.showReplyList.length - 1].userName}\n${feedHandler.showReplyList[feedHandler.showReplyList.length - 1].content}'),
-                          ),
+  width: double.infinity,
+  height: MediaQuery.of(context).size.height * 0.21,
+  color: Colors.grey[300],
+  child: Image.network(feedHandler.curFeed[0].feedImagePath),
+),
+Padding(
+  padding: const EdgeInsets.fromLTRB(10, 8, 16, 1),  // 패딩 추가
+  child: Text(
+    '${feedHandler.curFeed[0].writeTime.year}-${feedHandler.curFeed[0].writeTime.month.toString().padLeft(2, '0')}-${feedHandler.curFeed[0].writeTime.day.toString().padLeft(2, '0')} ${feedHandler.curFeed[0].writeTime.hour.toString().padLeft(2, '0')}:${feedHandler.curFeed[0].writeTime.minute.toString().padLeft(2, '0')}',
+    style: const TextStyle(
+      color: Color(0xFF808080),
+      fontSize: 16,
+    ),
+  ),
+),
+Padding(
+  padding: const EdgeInsets.fromLTRB(10, 3, 16, 1),  // 패딩 추가
+  child: Text(
+    '게시물 작성 내용 : ${feedHandler.curFeed[0].content}',
+    softWrap: true,
+    overflow: TextOverflow.visible,
+  ),
+),
+Padding(
+  padding: const EdgeInsets.fromLTRB(10, 1, 16, 1),
+  child: Row(
+    children: [
+      LikeButton(
+        likeCount: feedHandler.likeCount.value,
+        isLiked: feedHandler.isLike.value,
+        onTap: (value) => feedHandler.onLikeButtonTapped(value),
+      ),
+      GestureDetector(
+        onTap: () => replyBottomSheet(context, feedHandler),
+        child: const Row(
+          children: [
+            IconButton(
+              onPressed: null, // 여기서는 null로 설정하여 IconButton의 기본 동작을 비활성화
+              icon: Icon(Icons.mode_comment_rounded),
+            ),
+            Text(
+              "댓글",
+              style: TextStyle(
+                fontSize: 14,
+                color: Colors.black54,
+              ),
+            ),
+          ],
+        ),
+      ),
+    ],
+  ),
+),
+Padding(
+  padding: const EdgeInsets.fromLTRB(12, 10, 16, 10),
+  child: GestureDetector(
+    onTap: () => replyBottomSheet(context, feedHandler),
+    child: feedHandler.showReplyList.isEmpty
+        ? const Text(
+            "첫 댓글을 작성해보세요!",
+            style: TextStyle(color: Colors.grey),
+          )
+        : Text(
+            '${feedHandler.showReplyList[feedHandler.showReplyList.length - 1].userName}\n${feedHandler.showReplyList[feedHandler.showReplyList.length - 1].content}',
+          ),
+  ),
+),
                         ],
                       ),
                     ),

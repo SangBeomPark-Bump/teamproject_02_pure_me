@@ -22,7 +22,7 @@ class CalcHome extends StatelessWidget {
         body: SingleChildScrollView(
           child: Center(
             child: Padding(
-              padding: const EdgeInsets.fromLTRB(25, 100, 25, 50),
+              padding: const EdgeInsets.fromLTRB(25, 70, 25, 50),
               child: Container(
                 width: MediaQuery.of(context).size.width,
                 decoration: const BoxDecoration(

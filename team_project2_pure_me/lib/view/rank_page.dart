@@ -8,6 +8,7 @@ class RankPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final RankHandler rankHandler = Get.put(RankHandler());
+    rankHandler.fetchRank();
 
     return Scaffold(
       backgroundColor: Colors.transparent,

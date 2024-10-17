@@ -139,15 +139,6 @@ class Login extends StatelessWidget {
                                     _showalibaba();
                                     return;
                                   }
-                                  if (vmHandler.manageLogin == 0) {
-                                    var cease =
-                                        await vmHandler.ceaseAccountVerify(
-                                            idController.text.trim());
-                                    if (cease.$1 != null) {
-                                      showCease(cease.$2!, cease.$1!);
-                                      return;
-                                    }
-                                  }
                                   // 로그인 로직
                                   bool checkLogin = vmHandler.manageLogin == 0
                                       ? await vmHandler.loginVerify(
@@ -159,6 +150,14 @@ class Login extends StatelessWidget {
                                         );
                                   if (checkLogin) {
                                     if (vmHandler.manageLogin == 0) {
+                                      var cease =
+                                          await vmHandler.ceaseAccountVerify(
+                                              idController.text.trim());
+                                      if (cease.$1 != null) {
+                                        showCease(cease.$2!, cease.$1!);
+                                        return;
+                                      }
+                                      await vmHandler.curUserUpdate(idController.text.trim());
                                       box.write('pureme_id', idController.text);
                                     } else {
                                       box.write('manager', idController.text);

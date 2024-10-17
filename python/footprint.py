@@ -347,7 +347,7 @@ async def calculate_with_reduction(user_eMail: str):
         # 현재 날짜와 가입일로 기간 계산
         current_date = datetime.now().date()
         date_diff = (current_date - join_date).days  # 가입일부터 현재일까지의 일 수
-        if date_diff < 1:
+        if date_diff < 0:
             return {'result': 'Error', 'message': '가입일이 현재 날짜 이후입니다.'}
 
         # 가입일부터 현재까지의 개월 수 계산
